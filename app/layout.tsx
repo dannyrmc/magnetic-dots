@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="overflow-x-hidden overscroll-none md:overscroll-auto"
+      className="overflow-x-hidden overscroll-none md:overscroll-auto bg-background text-foreground"
     >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

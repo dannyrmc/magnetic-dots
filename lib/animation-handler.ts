@@ -121,7 +121,7 @@ export const animateDots = ({
       }
     }
 
-    ctx.fillStyle = "currentColor";
+    ctx.fillStyle = "#0A0A0A";
     ctx.beginPath();
     ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
     ctx.fill();
