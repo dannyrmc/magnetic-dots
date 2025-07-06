@@ -73,7 +73,7 @@ export const generateDots = (
   const dots: Dot[] = [];
 
   // Fixed dot density for consistent appearance
-  const dotDensity = 7; // Lower number = more dots
+  const dotDensity = 9; // Lower number = more dots
 
   //USER ->
 
