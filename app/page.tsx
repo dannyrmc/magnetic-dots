@@ -36,7 +36,7 @@ export default function Home() {
 
       {/* Controls */}
       <div className="flex flex-col items-start gap-5 w-full max-w-md">
-        <div className="w-full space-y-2">
+        <div className="w-full space-y-3 sm:space-y-3">
           <Label htmlFor="dot-density" className="text-sm font-medium">
             Dot Density: {densityLevel[0]}
           </Label>
@@ -49,13 +49,13 @@ export default function Home() {
             onValueChange={setDensityLevel}
             className="w-full"
           />
-          <div className="flex justify-between text-xs text-muted-foreground select-none">
-            <span>Fewer dots (3)</span>
-            <span>More dots (20)</span>
+          <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
+            <span>decrease</span>
+            <span>increase</span>
           </div>
         </div>
 
-        <div className="w-full space-y-2">
+        <div className="w-full space-y-3 sm:space-y-3">
           <Label htmlFor="dot-size" className="text-sm font-medium">
             Dot Size: {dotSizeScaler[0].toFixed(1)}
           </Label>
@@ -68,15 +68,17 @@ export default function Home() {
             onValueChange={setDotSizeScaler}
             className="w-full"
           />
-          <div className="flex justify-between text-xs text-muted-foreground select-none">
-            <span>Smaller (1.0)</span>
-            <span>Larger (4.0)</span>
+          <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
+            <span>decrease</span>
+            <span>increase</span>
           </div>
         </div>
 
-        <Button variant="secondary" onClick={handleReset}>
-          Reset All
-        </Button>
+        <div className="flex w-full sm:max-w-fit">
+          <Button onClick={handleReset}>
+            Reset All
+          </Button>
+        </div>
       </div>
     </div>
   )
