@@ -40,8 +40,12 @@ export const animateDots = ({
   const initialAssemblyForce = 0.004;
   const normalReturnForce = 0.008;
 
+  // User - normalReturnForce = 0.008
+
   // Scale interaction radius based on container size
   const maxDistance = Math.min(rect.width, rect.height) * 0.2;
+
+  // User - maxDistance ... 0.2
 
   // Calculate relative mouse position within the container
   const relativeMouseX = mouseState.x - rect.left;
@@ -58,7 +62,7 @@ export const animateDots = ({
 
     // Calculate distance from home position
     const distanceFromBase = Math.sqrt(
-      Math.pow(dot.x - dot.baseX, 2) + Math.pow(dot.y - dot.baseY, 2),
+      Math.pow(dot.x - dot.baseX, 2) + Math.pow(dot.y - dot.baseY, 2)
     );
 
     // If dot isn't close to home during initial animation, we're not done yet
@@ -76,12 +80,13 @@ export const animateDots = ({
         const lerpFactor = 0.12; // makes the dots move toward the target faster
         const falloff = Math.pow((maxDistance - distance) / maxDistance, 2); // steeper curve
 
+        // User - forceStrength = 40
+        // User - lerpFactor = 0.12
+
         const targetX =
-          dot.baseX -
-          Math.cos(angle) * falloff * (maxDistance * forceStrength);
+          dot.baseX - Math.cos(angle) * falloff * (maxDistance * forceStrength);
         const targetY =
-          dot.baseY -
-          Math.sin(angle) * falloff * (maxDistance * forceStrength);
+          dot.baseY - Math.sin(angle) * falloff * (maxDistance * forceStrength);
 
         dot.x += (targetX - dot.x) * lerpFactor;
         dot.y += (targetY - dot.y) * lerpFactor;
@@ -105,6 +110,8 @@ export const animateDots = ({
           // Add some damping
           dot.vx *= 0.86;
           dot.vy *= 0.86;
+
+          // user
 
           // Apply velocity
           dot.x += dot.vx;
@@ -167,11 +174,5 @@ const drawCursor = (
 
   // Draw outer white circle for interaction area
   ctx.beginPath();
-  ctx.arc(
-    relativeMouseX,
-    relativeMouseY,
-    interactionRadius,
-    0,
-    Math.PI * 2,
-  );
+  ctx.arc(relativeMouseX, relativeMouseY, interactionRadius, 0, Math.PI * 2);
 };

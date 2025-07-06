@@ -4,7 +4,9 @@ import type { Dot } from "@/lib/types";
 export const generateDots = (
   width: number,
   height: number,
-  isInitialAnimation: boolean
+  isInitialAnimation: boolean,
+  dotDensity = 9, // Add dotDensity as a parameter with default value
+  dotSizeScaler = 1.5 // Add dotSizeScaler parameter with default value
 ): Dot[] => {
   // Create an offscreen canvas to draw and sample from
   const offscreen = document.createElement("canvas");
@@ -20,10 +22,11 @@ export const generateDots = (
   // Calculate scaling factor based on container size
   const svgHeight = 190; // Height of the SVG paths
   const svgWidth = 400; // Approximate width needed for all three digits
-
   const scale =
     Math.min(samplingWidth / svgWidth, samplingHeight / svgHeight) * 0.8;
-  const dotSize = Math.max(1.5, Math.min(2, width / 400));
+
+  // Use the dotSizeScaler parameter instead of hardcoded 1.5
+  const dotSize = Math.max(dotSizeScaler, Math.min(2, width / 400));
 
   // Center the digits in the sampling canvas
   const centerX = samplingWidth / 2;
@@ -63,20 +66,16 @@ export const generateDots = (
   offscreenCtx.fill(secondFourPath);
   offscreenCtx.restore();
 
-  // Sample points from the filled paths with fixed density
+  // Sample points from the filled paths with configurable density
   const imageData = offscreenCtx.getImageData(
     0,
     0,
     samplingWidth,
-    samplingHeight,
+    samplingHeight
   );
   const dots: Dot[] = [];
 
-  // Fixed dot density for consistent appearance
-  const dotDensity = 9; // Lower number = more dots
-
-  //USER ->
-
+  // Use the passed dotDensity parameter
   for (let y = 0; y < samplingHeight; y += dotDensity) {
     for (let x = 0; x < samplingWidth; x += dotDensity) {
       const index = (y * samplingWidth + x) * 4;
@@ -89,7 +88,6 @@ export const generateDots = (
         // If this is the initial animation, scatter the dots randomly
         let startX = canvasX;
         let startY = canvasY;
-
         if (isInitialAnimation) {
           // Scatter within the full container area
           startX = Math.random() * width;
@@ -105,7 +103,7 @@ export const generateDots = (
           baseY: canvasY,
           size: dotSize,
           lastForced: 0,
-          // Random assembly delay between 0-800ms for staggered animation
+          // Random assembly delay between 0-400ms for staggered animation
           assemblyDelay: Math.random() * 400,
         });
       }
