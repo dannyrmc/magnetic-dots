@@ -34,9 +34,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-svh w-full flex-col justify-center items-center gap-8 p-8">
-      <main className="flex w-full justify-center items-center min-w-0">
-        <div className="relative mb-4 w-[500px] h-[224px]">
+    <div className="flex h-svh w-full flex-col justify-center items-center">
+      <main className="flex w-full flex-col justify-center items-center min-w-0 gap-6 sm:gap-8 p-6 sm:p-8 max-w-lg">
+        <div className="relative mb-4 w-full h-[224px]">
           <InteractiveDots
             ref={interactiveDotsRef}
             densityLevel={densityLevel[0]}
@@ -44,71 +44,70 @@ export default function Home() {
             animationSpeed={animationSpeed[0]}
           />
         </div>
+        {/* Controls */}
+        <div className="flex flex-col items-start gap-5 w-full max-h-72 overflow-y-scroll px-2">
+          <div className="w-full space-y-3 sm:space-y-3">
+            <Label htmlFor="dot-density" className="text-sm font-medium">
+              Dot Density: {densityLevel[0]}
+            </Label>
+            <Slider
+              id="dot-density"
+              min={3}
+              max={20}
+              step={1}
+              value={densityLevel}
+              onValueChange={setDensityLevel}
+              className="w-full"
+            />
+            <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
+              <span>decrease</span>
+              <span>increase</span>
+            </div>
+          </div>
+
+          <div className="w-full space-y-3 sm:space-y-3">
+            <Label htmlFor="dot-size" className="text-sm font-medium">
+              Dot Size: {dotSizeScaler[0].toFixed(1)}
+            </Label>
+            <Slider
+              id="dot-size"
+              min={1.0}
+              max={4.0}
+              step={0.1}
+              value={dotSizeScaler}
+              onValueChange={setDotSizeScaler}
+              className="w-full"
+            />
+            <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
+              <span>decrease</span>
+              <span>increase</span>
+            </div>
+          </div>
+
+          <div className="w-full space-y-2">
+            <Label htmlFor="animation-speed" className="text-sm font-medium">
+              Animation Speed: {animationSpeed[0].toFixed(3)}
+            </Label>
+            <Slider
+              id="animation-speed"
+              min={0.001}
+              max={0.08}
+              step={0.001}
+              value={animationSpeed}
+              onValueChange={setAnimationSpeed}
+              className="w-full"
+            />
+            <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
+              <span>decrease</span>
+              <span>increase</span>
+            </div>
+          </div>
+
+          <div className="flex w-full sm:max-w-fit">
+            <Button onClick={handleReset}>Reset All</Button>
+          </div>
+        </div>
       </main>
-
-      {/* Controls */}
-      <div className="flex flex-col items-start gap-5 w-full max-w-md max-h-72 overflow-y-scroll">
-        <div className="w-full space-y-3 sm:space-y-3">
-          <Label htmlFor="dot-density" className="text-sm font-medium">
-            Dot Density: {densityLevel[0]}
-          </Label>
-          <Slider
-            id="dot-density"
-            min={3}
-            max={20}
-            step={1}
-            value={densityLevel}
-            onValueChange={setDensityLevel}
-            className="w-full"
-          />
-          <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
-            <span>decrease</span>
-            <span>increase</span>
-          </div>
-        </div>
-
-        <div className="w-full space-y-3 sm:space-y-3">
-          <Label htmlFor="dot-size" className="text-sm font-medium">
-            Dot Size: {dotSizeScaler[0].toFixed(1)}
-          </Label>
-          <Slider
-            id="dot-size"
-            min={1.0}
-            max={4.0}
-            step={0.1}
-            value={dotSizeScaler}
-            onValueChange={setDotSizeScaler}
-            className="w-full"
-          />
-          <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
-            <span>decrease</span>
-            <span>increase</span>
-          </div>
-        </div>
-
-        <div className="w-full space-y-2">
-          <Label htmlFor="animation-speed" className="text-sm font-medium">
-            Animation Speed: {animationSpeed[0].toFixed(3)}
-          </Label>
-          <Slider
-            id="animation-speed"
-            min={0.001}
-            max={0.08}
-            step={0.001}
-            value={animationSpeed}
-            onValueChange={setAnimationSpeed}
-            className="w-full"
-          />
-          <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
-            <span>decrease</span>
-            <span>increase</span>
-          </div>
-        </div>
-
-        <div className="flex w-full sm:max-w-fit">
-          <Button onClick={handleReset}>Reset All</Button>
-        </div>
-      </div>
     </div>
   );
 }

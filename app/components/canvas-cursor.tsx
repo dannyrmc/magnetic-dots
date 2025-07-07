@@ -4,7 +4,7 @@ const CanvasCursor = React.forwardRef<HTMLCanvasElement>((props, ref) => {
   return (
     <canvas
       ref={ref}
-      className="pointer-events-none absolute inset-0 h-full w-full touch-none"
+      className="pointer-events-none absolute inset-0 h-full w-full touch-none select-none"
       {...props}
     />
   );
