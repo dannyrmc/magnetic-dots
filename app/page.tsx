@@ -45,7 +45,7 @@ export default function Home() {
           />
         </div>
         {/* Controls */}
-        <div className="flex flex-col items-start gap-5 w-full max-h-72 overflow-y-scroll px-2">
+        <div className="flex flex-col items-start gap-5 w-full max-h-72 px-2">
           <div className="w-full space-y-3 sm:space-y-3">
             <Label htmlFor="dot-density" className="text-sm font-medium">
               Dot Density: {densityLevel[0]}
