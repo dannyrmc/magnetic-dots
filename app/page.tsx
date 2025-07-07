@@ -93,7 +93,7 @@ export default function Home() {
           <Slider
             id="animation-speed"
             min={0.001}
-            max={0.05}
+            max={0.08}
             step={0.001}
             value={animationSpeed}
             onValueChange={setAnimationSpeed}
