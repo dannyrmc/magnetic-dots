@@ -1,41 +1,53 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import InteractiveDots, { type InteractiveDotsRef } from "@/app/components/interactive-dots"
-import { Slider } from "@/components/ui/slider"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import { useState, useRef } from "react";
+import InteractiveDots, {
+  type InteractiveDotsRef,
+} from "@/app/components/interactive-dots";
+import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   // Default values - centralized for easy maintenance
-  const DEFAULT_DENSITY_LEVEL = 14
-  const DEFAULT_DOT_SIZE_SCALER = 1.5
+  const DEFAULT_DENSITY_LEVEL = 14;
+  const DEFAULT_DOT_SIZE_SCALER = 1.5;
+  const DEFAULT_ANIMATION_SPEED = 0.008;
 
   // State for all animation parameters
-  const [densityLevel, setDensityLevel] = useState([DEFAULT_DENSITY_LEVEL])
-  const [dotSizeScaler, setDotSizeScaler] = useState([DEFAULT_DOT_SIZE_SCALER])
+  const [densityLevel, setDensityLevel] = useState([DEFAULT_DENSITY_LEVEL]);
+  const [dotSizeScaler, setDotSizeScaler] = useState([DEFAULT_DOT_SIZE_SCALER]);
+  const [animationSpeed, setAnimationSpeed] = useState([
+    DEFAULT_ANIMATION_SPEED,
+  ]);
 
-  const interactiveDotsRef = useRef<InteractiveDotsRef>(null)
+  const interactiveDotsRef = useRef<InteractiveDotsRef>(null);
 
   const handleReset = () => {
     // Reset UI controls to default values
-    setDensityLevel([DEFAULT_DENSITY_LEVEL])
-    setDotSizeScaler([DEFAULT_DOT_SIZE_SCALER])
+    setDensityLevel([DEFAULT_DENSITY_LEVEL]);
+    setDotSizeScaler([DEFAULT_DOT_SIZE_SCALER]);
+    setAnimationSpeed([DEFAULT_ANIMATION_SPEED]);
 
     // Reset the animation state
-    interactiveDotsRef.current?.resetAnimation()
-  }
+    interactiveDotsRef.current?.resetAnimation();
+  };
 
   return (
     <div className="flex h-svh w-full flex-col justify-center items-center gap-8 p-8">
       <main className="flex w-full justify-center items-center min-w-0">
         <div className="relative mb-4 w-[500px] h-[224px]">
-          <InteractiveDots ref={interactiveDotsRef} densityLevel={densityLevel[0]} dotSizeScaler={dotSizeScaler[0]} />
+          <InteractiveDots
+            ref={interactiveDotsRef}
+            densityLevel={densityLevel[0]}
+            dotSizeScaler={dotSizeScaler[0]}
+            animationSpeed={animationSpeed[0]}
+          />
         </div>
       </main>
 
       {/* Controls */}
-      <div className="flex flex-col items-start gap-5 w-full max-w-md">
+      <div className="flex flex-col items-start gap-5 w-full max-w-md max-h-72 overflow-y-scroll">
         <div className="w-full space-y-3 sm:space-y-3">
           <Label htmlFor="dot-density" className="text-sm font-medium">
             Dot Density: {densityLevel[0]}
@@ -74,12 +86,29 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="w-full space-y-2">
+          <Label htmlFor="animation-speed" className="text-sm font-medium">
+            Animation Speed: {animationSpeed[0].toFixed(3)}
+          </Label>
+          <Slider
+            id="animation-speed"
+            min={0.001}
+            max={0.05}
+            step={0.001}
+            value={animationSpeed}
+            onValueChange={setAnimationSpeed}
+            className="w-full"
+          />
+          <div className="font-mono flex justify-between text-xs text-muted-foreground select-none">
+            <span>decrease</span>
+            <span>increase</span>
+          </div>
+        </div>
+
         <div className="flex w-full sm:max-w-fit">
-          <Button onClick={handleReset}>
-            Reset All
-          </Button>
+          <Button onClick={handleReset}>Reset All</Button>
         </div>
       </div>
     </div>
-  )
+  );
 }

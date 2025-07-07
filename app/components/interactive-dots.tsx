@@ -12,6 +12,7 @@ import type { Dot, MouseState } from "@/lib/types";
 interface InteractiveDotsProps {
   densityLevel?: number;
   dotSizeScaler?: number;
+  animationSpeed?: number;
 }
 
 export interface InteractiveDotsRef {
@@ -19,7 +20,7 @@ export interface InteractiveDotsRef {
 }
 
 const InteractiveDots = forwardRef<InteractiveDotsRef, InteractiveDotsProps>(
-  ({ densityLevel = 14, dotSizeScaler = 1.5 }, ref) => {
+  ({ densityLevel = 12, dotSizeScaler = 1.5, animationSpeed = 0.008 }, ref) => {
     // Convert user-facing density level to internal dotDensity (invert the relationship)
     const dotDensity = 23 - densityLevel;
 
@@ -118,6 +119,7 @@ const InteractiveDots = forwardRef<InteractiveDotsRef, InteractiveDotsProps>(
           startTimeRef,
           ctx,
           cursorCtx,
+          animationSpeed, // Pass the animation speed parameter
         });
 
         animationRef.current = requestAnimationFrame(animate);
@@ -134,7 +136,7 @@ const InteractiveDots = forwardRef<InteractiveDotsRef, InteractiveDotsProps>(
           cancelAnimationFrame(animationRef.current);
         }
       };
-    }, [densityLevel, dotSizeScaler]); // Add dotSizeScaler to dependency array
+    }, [densityLevel, dotSizeScaler, animationSpeed]); // Add animationSpeed to dependency array
 
     const handleInteraction = (clientX: number, clientY: number) => {
       // Check if the mouse has actually moved from previous position

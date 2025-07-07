@@ -1,5 +1,5 @@
 import type { Dot, MouseState } from "@/lib/types";
-import { RefObject, MutableRefObject } from "react";
+import type { RefObject, MutableRefObject } from "react";
 
 interface AnimationParams {
   dots: Dot[];
@@ -11,18 +11,20 @@ interface AnimationParams {
   startTimeRef: MutableRefObject<number>;
   ctx: CanvasRenderingContext2D;
   cursorCtx: CanvasRenderingContext2D;
+  animationSpeed?: number; // Add animation speed parameter
 }
 
 export const animateDots = ({
   dots,
   mouseState,
-  prevMouseState, // Currently unused but kept for compatibility
+  prevMouseState,
   mouseMovedRef,
   containerRef,
   initialAnimationRef,
   startTimeRef,
   ctx,
   cursorCtx,
+  animationSpeed = 0.008, // Default value matching the original normalReturnForce
 }: AnimationParams) => {
   if (!containerRef.current) return;
 
@@ -37,10 +39,9 @@ export const animateDots = ({
   const currentTime = Date.now();
 
   // Force for initial animation - faster than normal return
-  const initialAssemblyForce = 0.004;
-  const normalReturnForce = 0.008;
-
-  // User - normalReturnForce = 0.008
+  const initialAssemblyForce = 0.006;
+  // Use the configurable animationSpeed instead of hardcoded normalReturnForce
+  const normalReturnForce = animationSpeed;
 
   // Scale interaction radius based on container size
   const maxDistance = Math.min(rect.width, rect.height) * 0.2;
@@ -50,6 +51,22 @@ export const animateDots = ({
   // Calculate relative mouse position within the container
   const relativeMouseX = mouseState.x - rect.left;
   const relativeMouseY = mouseState.y - rect.top;
+
+  // Check if user is trying to interact during initial animation
+  const isMouseInContainer =
+    relativeMouseX >= 0 &&
+    relativeMouseX <= rect.width &&
+    relativeMouseY >= 0 &&
+    relativeMouseY <= rect.height;
+
+  // If user moves mouse within container during initial animation, interrupt it
+  if (initialAnimationRef.current && mouseMoved && isMouseInContainer) {
+    initialAnimationRef.current = false;
+    // Reset lastForced for all dots so they can respond immediately
+    dots.forEach((dot) => {
+      dot.lastForced = 0;
+    });
+  }
 
   // Track if all dots are close to their base positions
   let allDotsInPosition = true;
@@ -70,6 +87,7 @@ export const animateDots = ({
       allDotsInPosition = false;
     }
 
+    // Allow interaction regardless of initial animation state
     if (distance < maxDistance && !initialAnimationRef.current) {
       // This dot is in the "shark zone"
       if (mouseMoved) {
@@ -108,10 +126,10 @@ export const animateDots = ({
           dot.vy += dy * initialAssemblyForce;
 
           // Add some damping
-          dot.vx *= 0.86;
-          dot.vy *= 0.86;
+          dot.vx *= 0.85;
+          dot.vy *= 0.85;
 
-          // user
+          // user - dot.vx *= 0.9;
 
           // Apply velocity
           dot.x += dot.vx;
