@@ -32,6 +32,7 @@ const InteractiveDots = forwardRef<InteractiveDotsRef, InteractiveDotsProps>(
     const prevMouseRef = useRef<MouseState>({ x: 0, y: 0 });
     const mouseMovedRef = useRef(false);
     const animationRef = useRef<number | undefined>(undefined);
+    const lastVibrationRef = useRef(0); // Track last vibration time
 
     // New refs for the animation
     const initialAnimationRef = useRef(true);
@@ -59,6 +60,41 @@ const InteractiveDots = forwardRef<InteractiveDotsRef, InteractiveDotsProps>(
     useImperativeHandle(ref, () => ({
       resetAnimation,
     }));
+
+    // Haptic feedback function
+    const triggerHapticFeedback = () => {
+      const now = Date.now();
+      // Throttle vibrations to avoid overwhelming the user (max once per 100ms)
+      if (now - lastVibrationRef.current < 100) return;
+
+      if ("vibrate" in navigator) {
+        // Light vibration pattern: short pulse
+        navigator.vibrate(15); // 15ms vibration
+        lastVibrationRef.current = now;
+      }
+    };
+
+    // Check if dots are being pushed by cursor
+    const checkForDotInteraction = (clientX: number, clientY: number) => {
+      if (!containerRef.current || initialAnimationRef.current) return;
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const relativeMouseX = clientX - rect.left;
+      const relativeMouseY = clientY - rect.top;
+      const maxDistance = Math.min(rect.width, rect.height) * 0.2;
+
+      // Check if any dots are within interaction range
+      const isInteracting = dotsRef.current.some((dot) => {
+        const dx = relativeMouseX - dot.x;
+        const dy = relativeMouseY - dot.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < maxDistance;
+      });
+
+      if (isInteracting) {
+        triggerHapticFeedback();
+      }
+    };
 
     useEffect(() => {
       const container = containerRef.current;
@@ -147,6 +183,9 @@ const InteractiveDots = forwardRef<InteractiveDotsRef, InteractiveDotsProps>(
       if (hasMoved) {
         mouseMovedRef.current = true;
         prevMouseRef.current = { x: clientX, y: clientY };
+
+        // Check for dot interaction and trigger haptic feedback
+        checkForDotInteraction(clientX, clientY);
       }
 
       mouseRef.current = {
