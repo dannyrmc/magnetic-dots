@@ -1,4 +1,5 @@
 import { FOUR_PATH, ZERO_PATH } from "@/lib/svg-paths";
+import { LETTER_D_PATH, LETTER_O_PATH, LETTER_S_PATH, LETTER_T_PATH } from "@/lib/svg-paths";
 import type { Dot } from "@/lib/types";
 
 export const generateDots = (
@@ -20,7 +21,7 @@ export const generateDots = (
   offscreen.height = samplingHeight;
 
   // Calculate scaling factor based on container size
-  const svgHeight = 190; // Height of the SVG paths
+  const svgHeight = 225; // Height of the SVG paths
   const svgWidth = 400; // Approximate width needed for all three digits
   const scale =
     Math.min(samplingWidth / svgWidth, samplingHeight / svgHeight) * 0.8;

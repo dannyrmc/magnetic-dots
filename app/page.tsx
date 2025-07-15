@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   // Default values - centralized for easy maintenance
   const DEFAULT_DENSITY_LEVEL = 14;
-  const DEFAULT_DOT_SIZE_SCALER = 1.5;
-  const DEFAULT_ANIMATION_SPEED = 0.008;
+  const DEFAULT_DOT_SIZE_SCALER = 1.7;
+  const DEFAULT_ANIMATION_SPEED = 0.010;
 
   // State for all animation parameters
   const [densityLevel, setDensityLevel] = useState([DEFAULT_DENSITY_LEVEL]);
@@ -35,8 +35,8 @@ export default function Home() {
 
   return (
     <div className="flex h-svh w-full flex-col justify-center items-center">
-      <main className="flex w-full flex-col justify-center items-center min-w-0 gap-6 sm:gap-8 p-6 sm:p-8 max-w-lg">
-        <div className="relative mb-4 w-full h-[224px]">
+      <main className="flex w-full flex-col justify-center items-center min-w-0 gap-6 sm:gap-8 p-6 sm:p-8">
+        <div className="relative mb-4 w-full max-w-xl h-[224px] sm:h-[260px]">
           <InteractiveDots
             ref={interactiveDotsRef}
             densityLevel={densityLevel[0]}
@@ -45,14 +45,14 @@ export default function Home() {
           />
         </div>
         {/* Controls */}
-        <div className="flex flex-col items-start gap-5 w-full max-h-72 px-2">
+        <div className="flex flex-col items-start gap-5 w-full max-w-md max-h-72 px-2">
           <div className="w-full space-y-3 sm:space-y-3">
             <Label htmlFor="dot-density" className="text-sm font-medium">
               Dot Density: {densityLevel[0]}
             </Label>
             <Slider
               id="dot-density"
-              min={3}
+              min={1}
               max={20}
               step={1}
               value={densityLevel}
@@ -72,7 +72,7 @@ export default function Home() {
             <Slider
               id="dot-size"
               min={1.0}
-              max={4.0}
+              max={10.0}
               step={0.1}
               value={dotSizeScaler}
               onValueChange={setDotSizeScaler}
@@ -91,7 +91,7 @@ export default function Home() {
             <Slider
               id="animation-speed"
               min={0.001}
-              max={0.08}
+              max={0.090}
               step={0.001}
               value={animationSpeed}
               onValueChange={setAnimationSpeed}
