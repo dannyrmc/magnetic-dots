@@ -12,7 +12,7 @@ export default function Home() {
   // Default values - centralized for easy maintenance
   const DEFAULT_DENSITY_LEVEL = 14;
   const DEFAULT_DOT_SIZE_SCALER = 1.7;
-  const DEFAULT_ANIMATION_SPEED = 0.010;
+  const DEFAULT_ANIMATION_SPEED = 0.015;
 
   // State for all animation parameters
   const [densityLevel, setDensityLevel] = useState([DEFAULT_DENSITY_LEVEL]);
@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <div className="flex h-svh w-full flex-col justify-center items-center">
       <main className="flex w-full flex-col justify-center items-center min-w-0 gap-6 sm:gap-8 p-6 sm:p-8">
-        <div className="relative mb-4 w-full max-w-xl h-[224px] sm:h-[260px]">
+        <div className="relative mb-4 w-full max-w-xl h-[224px] sm:h-[260px] select-none">
           <InteractiveDots
             ref={interactiveDotsRef}
             densityLevel={densityLevel[0]}
