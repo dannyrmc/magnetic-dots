@@ -146,7 +146,11 @@ export const animateDots = ({
       }
     }
 
-    ctx.fillStyle = "#0A0A0A";
+    // Calculate horizontal position ratio (0 to 1) for gradient
+    const t = dot.baseX / rect.width;
+    // Interpolate from blue (hue 220) to purple (hue 280)
+    const hue = 220 + t * 60;
+    ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
     ctx.beginPath();
     ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
     ctx.fill();
